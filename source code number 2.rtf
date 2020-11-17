@@ -1,0 +1,61 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2513
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fnil\fcharset0 Calibri;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\margl1440\margr1440\vieww10800\viewh8400\viewkind0
+\deftab720
+\pard\pardeftab720\li720\ri0\partightenfactor0
+
+\f0\fs24 \cf0 #include <stdio.h>\
+#include <time.h>\
+#include <stdlib.h>\
+void\
+static_allocation ()\
+\{\
+    static int array[100000];\
+\}\
+void\
+allocation_in_stack_memory ()\
+\{\
+    int array1[100000];\
+\}\
+void\
+allocation_in_heap_memory ()\
+\{\
+    int *array2 = (int *) malloc (100000 * sizeof (int));\
+\}\
+main()\
+\{\
+    struct timespec time_1, time_2;\
+    int i;\
+    clock_gettime (CLOCK_REALTIME, &time_1);\
+    for (i = 0; i < 100000; i++)\
+    \{\
+        static_allocation ();\
+    \}\
+    clock_gettime (CLOCK_REALTIME, &time_2);\
+    printf\
+    ("static allocation of array size of 100000, it took %d ns \\n",\
+    time_2.tv_nsec - time_1.tv_nsec);\
+    \
+    clock_gettime (CLOCK_REALTIME, &time_1);\
+    for (i = 0; i < 100000; i++)\
+    \{\
+        allocation_in_stack_memory ();\
+    \}\
+    clock_gettime (CLOCK_REALTIME, &time_2);\
+    printf\
+    ("stack memory allocation of array size of 100000, it took %d ns \\n",\
+    time_2.tv_nsec - time_1.tv_nsec);\
+    \
+    clock_gettime (CLOCK_REALTIME, &time_1);\
+    for (i = 0; i < 100000; i++)\
+    \{\
+        allocation_in_heap_memory ();\
+    \}\
+    clock_gettime (CLOCK_REALTIME, &time_2);\
+    printf\
+    ("heap memory allocation of array size of 100000, it took %d ns \\n",\
+    difftime (time_2.tv_sec, time_1.tv_sec));\
+\pard\pardeftab720\ri0\partightenfactor0
+\cf0 \}}
